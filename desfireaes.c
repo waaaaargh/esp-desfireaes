@@ -15,8 +15,9 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifdef	ESP_PLATFORM
+#ifdef ESP_PLATFORM
 #include <esp_system.h>
+#include <esp_random.h>
 #include <aes/esp_aes.h>
 #include "esp_log.h"
 #else
