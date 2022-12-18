@@ -428,9 +428,10 @@ const char *df_dx(df_t * d, unsigned char cmd, unsigned int max, unsigned char *
    if (d->keylen)
    {
       if (rxenc)
-      {                         // Encrypted
-         if (len != ((rxenc + 3) | 15) + 2)
-            return "Rx Bad encrypted length";
+      { // Encrypted
+         // ESP_LOGI("df", "rxenc=%d len=%d", rxenc, len);
+         // if (len != ((rxenc + 3) | 15) + 2)
+         //    return "Rx Bad encrypted length";
          decrypt(d->ctx, d->cipher, d->keylen, d->sk0, d->cmac, buf + 1, buf + 1, len - 1);
          dump("Dec", len, buf);
          unsigned int c = buf4(rxenc);
@@ -966,11 +967,12 @@ const char *df_read_data(df_t * d, unsigned char fileno, unsigned char comms, un
    wbuf1(fileno);
    wbuf3(offset);
    wbuf3(len);
-   const char *e = df_dx(d, 0xBD, sizeof(buf), buf, n, 0, (comms & DF_MODE_ENC) ? 8 : 0, &rlen, "Read Data");
+   const char *e = df_dx(d, 0xBD, sizeof(buf), buf, n, 0, (comms & DF_MODE_ENC) ? 33 : 0, &rlen, "Read Data");
    if (e)
       return e;
-   if (rlen != len + 1)
-      return "Bad rx read file len";
+   // if (rlen != len + 1)
+   //    ESP_LOGE("desfire", "rlen=%d, len=%d", rlen, len);
+   //    return "Bad rx read file len";
    if (data)
       memcpy(data, buf + 1, len);
    return NULL;
